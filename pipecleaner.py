@@ -21,6 +21,7 @@ class EveData(object):
 
     update_interval = 1200
     retry = 5
+    max_frames = 100
 
     def __init__(self, data_fn='data/systems.json'):
         '''Initialize a new EveData object.
@@ -32,8 +33,8 @@ class EveData(object):
         '''
 
         self.systems_df = pd.read_json(data_fn)
-        self.system_ids = pd.concat([self.systems_df.Entry_ID, 
-                                     self.systems_df.Dest_ID])
+        self.system_ids = set(pd.concat([self.systems_df.Entry_ID, 
+                                     self.systems_df.Dest_ID]))
 
         self.last_query_time = None
         self.map_api = Map()
@@ -115,17 +116,31 @@ class EveData(object):
                 self.kills_history[self.last_query_time] = kills_df
                 self.jumps_history[self.last_query_time] = jumps_df
                 self.sov_history[self.last_query_time] = sov_df
+
+                if len(self.kills_history) >= EveData.max_frames:
+                    del self.kills_history[self.kills_history.index.min()]
+                if len(self.jumps_history) >= EveData.max_frames:
+                    del self.jumps_history[self.jumps_history.index.min()]
+                if len(self.kills_history) >= EveData.max_frames:
+                    del self.sov_history[self.sov_history.index.min()]
+
         return self.latest()
+
+    def dump(self):
+        pass
 
 data = EveData()
 
 @app.route('/')
 def home():
     timestamp, kills, jumps, sov = data.update()
+    print timestamp
+    print kills
+    print jumps
     return render_template('main.html', timestamp=timestamp,
-                                        systems=data.systems_df,
-                                        kills=kills,
-                                        jumps=jumps)
+                                        systems=data.systems_df.fillna(0),
+                                        kills=kills.fillna(0),
+                                        jumps=jumps.fillna(0))
 
 if __name__ == '__main__':
     app.debug = True
