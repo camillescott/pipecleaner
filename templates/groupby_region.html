@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+{% block content %}
+
+{% for region, group in results_df.groupby('Dest_Region') %}
+
+    {% for _, row in group.sort_values('Dest').iterrows() %}
+        <tr>
+        {% if loop.first %} 
+            <th class="region" rowspan="{{group.index.size}}"> {{ region }} </th>
+        {% endif %}
+        <td>
+            <a href="http://zkillboard.com/system/{{row.Dest_ID}}/">{{ row.Dest }}</a>
+        </td>
+        <td>{{ row.Dest_PodKills|int }}</td>
+        <td>{{ row.Dest_PodKills|int }} </td>
+        <td>{{ row.Dest_Jumps|int }}</td>
+
+        <td>
+            <a href="http://zkillboard.com/system/{{row.Entry_ID}}/">{{ row.Entry }}</a> ({{row.Entry_Sec}})
+        </td>
+        <td>{{ row.Entry_ShipKills|int }}</td>
+        <td>{{ row.Entry_PodKills|int }} </td>
+        <td>{{ row.Entry_Jumps }} </td>
+
+        </tr>
+    {% endfor %}
+{% endfor %}
+{% endblock %}

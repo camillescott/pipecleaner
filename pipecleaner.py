@@ -9,7 +9,8 @@ class EveData(object):
     '''Manages EVE API access.
 
     Queries the EVE API for kills, jumps, and sovereignty. Stores
-    history in a Pandas panel and writes it to disk on occasion.
+    history in a Pandas panel and writes it to disk on occasion (JK not yet
+    actually, but soon (tm)).
 
     Attributes:
         systems_df (DataFrame): Data for the nullsec entry systems.
@@ -87,14 +88,29 @@ class EveData(object):
         '''Get the most recent API data being stored.
 
         Returns:
-            (Timestamp, DataFrame, DataFrame, DataFrame): Query time and jumps,
-            kills, and sov data.
+            (Timestamp, DataFrame): Last update time and the merged result DataFrame.
         '''
 
-        return self.last_query_time, \
-               self.kills_history[self.last_query_time], \
-               self.jumps_history[self.last_query_time], \
-               self.sov_history[self.last_query_time]
+        kills = self.kills_history[self.last_query_time]
+        jumps = self.jumps_history[self.last_query_time]
+
+        merged = self.systems_df.copy()
+        merged = merged.set_index('Entry_ID').sort_index()
+        merged['Entry_ShipKills'] = kills.ix[self.systems_df.Entry_ID].ship.sort_index()
+        merged['Entry_PodKills'] = kills.ix[self.systems_df.Entry_ID].pod.sort_index()
+        merged['Entry_Jumps'] = jumps.ix[self.systems_df.Entry_ID].jumps.sort_index()
+        merged.reset_index(inplace=True)
+
+        merged = merged.set_index('Dest_ID').sort_index()
+        merged['Dest_ShipKills'] = kills.ix[self.systems_df.Dest_ID].ship.sort_index()
+        merged['Dest_PodKills'] = kills.ix[self.systems_df.Dest_ID].pod.sort_index()
+        merged['Dest_Jumps'] = jumps.ix[self.systems_df.Dest_ID].jumps.sort_index()
+        merged.reset_index(inplace=True)
+
+        merged.sort_values('Dest_Region', inplace=True)
+        merged.fillna(0, inplace=True)
+
+        return self.last_query_time, merged
 
 
     def update(self):
@@ -131,16 +147,24 @@ class EveData(object):
 
 data = EveData()
 
+
 @app.route('/')
-def home():
-    timestamp, kills, jumps, sov = data.update()
-    print timestamp
-    print kills
-    print jumps
-    return render_template('main.html', timestamp=timestamp,
-                                        systems=data.systems_df.fillna(0),
-                                        kills=kills.fillna(0),
-                                        jumps=jumps.fillna(0))
+@app.route('/groupby/Region')
+def region():
+    timestamp, results_df = data.update()
+
+    return render_template('groupby_region.html', 
+                           timestamp=timestamp,
+                           results_df=results_df)
+
+@app.route('/sortby/<key>')
+def sortby(key):
+    timestamp, results_df = data.update()
+
+    results_df.sort_values(key, inplace=True)
+    return render_template('sortby.html',
+                           timestamp=timestamp,
+                           results_df=results_df)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
