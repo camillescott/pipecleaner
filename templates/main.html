@@ -15,11 +15,11 @@
     <table>
     <tr class="header">
         <td class="header_region">Region</td>
-        <td class="header">Entry System</td>
+        <td class="header">Nullsec System</td>
         <td class="header">Ship Kills</td>
         <td class="header">Pod Kills</td>
         <td class="header">Jumps</td>
-        <td class="header">Dest System</td>
+        <td class="header">Entry System</td>
         <td class="header">Ship Kills</td>
         <td class="header">Pod Kills</td>
         <td class="header">Jumps</td>
@@ -28,19 +28,21 @@
 
         <tr class="region_div">
         <th class="region" rowspan="{{group.index.size}}"> {{ region }} </th>
-        {% for _, system in group.iterrows() %}
-                <td>
-                    <a href="http://zkillboard.com/system/{{system.Entry_ID}}/">{{ system.Entry }}</a> ({{system.Entry_Sec}})
-                </td>
-                <td>{{ kills.ix[system.Entry_ID].ship|int }}</td>
-                <td>{{ kills.ix[system.Entry_ID].pod|int }} </td>
-                <td>{{ jumps.ix[system.Entry_ID].jumps}} </td>
+        {% for _, system in group.sort_values('Dest').iterrows() %}
                 <td>
                     <a href="http://zkillboard.com/system/{{system.Dest_ID}}/">{{ system.Dest }}</a>
                 </td>
                 <td>{{ kills.ix[system.Dest_ID].ship|int }}</td>
                 <td>{{ kills.ix[system.Dest_ID].pod|int }} </td>
                 <td>{{ jumps.ix[system.Dest_ID].jumps}}</td>
+
+                <td>
+                    <a href="http://zkillboard.com/system/{{system.Entry_ID}}/">{{ system.Entry }}</a> ({{system.Entry_Sec}})
+                </td>
+                <td>{{ kills.ix[system.Entry_ID].ship|int }}</td>
+                <td>{{ kills.ix[system.Entry_ID].pod|int }} </td>
+                <td>{{ jumps.ix[system.Entry_ID].jumps}} </td>
+
                 </tr>
                 <tr>
         {% endfor %}
