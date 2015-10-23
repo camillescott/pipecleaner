@@ -3,12 +3,12 @@
 
 
 {% for _, row in results_df.iterrows() %}
-    <tr>
+    <tr title="{{row.Hotness}}" style="background-color: rgba({{row.Color[0]}}, {{row.Color[1]}},{{row.Color[2]}}, 0.5)">
     <td>{{ row.Dest_Region }}</td>
     <td>
         <a href="http://zkillboard.com/system/{{row.Dest_ID}}/">{{ row.Dest }}</a>
     </td>
-    <td>{{ row.Dest_PodKills|int }}</td>
+    <td>{{ row.Dest_ShipKills|int }}</td>
     <td>{{ row.Dest_PodKills|int }}</td>
     <td>{{ row.Dest_Jumps|int }}</td>
 

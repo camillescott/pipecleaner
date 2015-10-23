@@ -1,3 +1,4 @@
+from matplotlib.pyplot import cm
 import pandas as pd
 import time
 
@@ -113,6 +114,14 @@ class EveData(object):
 
         merged.sort_values('Dest_Region', inplace=True)
         merged.fillna(0, inplace=True)
+        
+        print (merged.Dest_PodKills + merged.Dest_ShipKills)
+        print (merged.Dest_PodKills + merged.Dest_ShipKills).max()
+
+        merged['Hotness'] = (merged.Dest_PodKills + merged.Dest_ShipKills) / \
+                            (merged.Dest_PodKills + merged.Dest_ShipKills).max()
+
+        merged['Color'] = [tuple(c) for c in cm.RdBu_r(merged.Hotness, bytes=True)]
 
         return self.last_query_time, merged
 
