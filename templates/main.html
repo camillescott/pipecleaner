@@ -16,14 +16,30 @@
     <table>
     <tr class="header">
         <td class="header_region"><a href="groupby/Region">Region</a></td>
-        <td class="header"><a href="sortby/Dest">Nullsec System</a></td>
-        <td class="header"><a href="sortby/Dest_ShipKills">Ship Kills</a></td>
-        <td class="header"><a href="sortby/Dest_PodKills">Pod Kills</a></td>
-        <td class="header"><a href="sortby/Dest_Jumps">Jumps</a></td>
-        <td class="header"><a href="sortby/Entry">Entry System</a></td>
-        <td class="header"><a href="sortby/Entry_ShipKills">Ship Kills</a></td>
-        <td class="header"><a href="sortby/Entry_PodKills">Pod Kills</a></td>
-        <td class="header"><a href="sortby/Entry_Jumps">Jumps</a></td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Dest')}}">Nullsec System</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Dest_ShipKills')}}">Ship Kills</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Dest_PodKills')}}">Pod Kills</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Dest_Jumps')}}">Jumps</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Entry')}}">Entry System</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Entry_ShipKills')}}">Ship Kills</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Entry_PodKills')}}">Pod Kills</a>
+        </td>
+        <td class="header">
+            <a href="{{url_for('sortby', key='Entry_Jumps')}}">Jumps</a>
+        </td>
     </tr>
     {% block content %}
     {% endblock %}
