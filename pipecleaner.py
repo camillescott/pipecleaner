@@ -2,7 +2,7 @@ import pandas as pd
 import time
 
 from evelink.map import Map
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 app = Flask(__name__)
 
 class EveData(object):
@@ -23,6 +23,10 @@ class EveData(object):
     update_interval = 1200
     retry = 5
     max_frames = 100
+    keys = ['Dest_ID', 'Entry_ID', 'Dest', 'Dest_Region', 
+            'Dest_TrueSec', 'Entry', 'Entry_Region', 'Entry_Sec', 
+            'Entry_ShipKills', 'Entry_PodKills', 'Entry_Jumps', 
+            'Dest_ShipKills', 'Dest_PodKills', 'Dest_Jumps']
 
     def __init__(self, data_fn='data/systems.json'):
         '''Initialize a new EveData object.
@@ -159,7 +163,11 @@ def region():
 
 @app.route('/sortby/<key>')
 def sortby(key):
+    if key not in EveData.keys:
+        return redirect(url_for('region'))
+
     timestamp, results_df = data.update()
+    
 
     results_df.sort_values(key, inplace=True)
     return render_template('sortby.html',
