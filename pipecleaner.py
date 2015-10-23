@@ -6,11 +6,31 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 class EveData(object):
+    '''Manages EVE API access.
+
+    Queries the EVE API for kills, jumps, and sovereignty. Stores
+    history in a Pandas panel and writes it to disk on occasion.
+
+    Attributes:
+        systems_df (DataFrame): Data for the nullsec entry systems.
+        system_ids (Series): Series with all relevant system IDs, for
+        convenience.
+        last_query_time (Timestamp): Most recent successful query to the API.
+        map_api (Map): The evelink Map API object.
+    '''
 
     update_interval = 1200
     retry = 5
 
     def __init__(self, data_fn='data/systems.json'):
+        '''Initialize a new EveData object.
+
+        Queries the API for system data on creation.
+
+        Args:
+            data_fn (str): Path to JSON file with subset of systems.
+        '''
+
         self.systems_df = pd.read_json(data_fn)
         self.system_ids = pd.concat([self.systems_df.Entry_ID, 
                                      self.systems_df.Dest_ID])
@@ -36,6 +56,15 @@ class EveData(object):
                     raise RuntimeError('Failed to query API on __init__')
 
     def query(self):
+        '''Perform a query for jumps, kills, and sov against the EVE API.
+
+        Notes:
+            Raises an exception when the query fails, and does *not* update
+            the last_query_time attribute.
+        Returns:
+            (DataFrame, DataFrame, DataFrame): DataFrames with kills, jumps and
+            sov, respectively.
+        '''
 
         try:
             kills_res, _ = self.map_api.kills_by_system().result
@@ -54,6 +83,13 @@ class EveData(object):
             return kills_df, jumps_df, sov_df
 
     def latest(self):
+        '''Get the most recent API data being stored.
+
+        Returns:
+            (Timestamp, DataFrame, DataFrame, DataFrame): Query time and jumps,
+            kills, and sov data.
+        '''
+
         return self.last_query_time, \
                self.kills_history[self.last_query_time], \
                self.jumps_history[self.last_query_time], \
@@ -61,6 +97,14 @@ class EveData(object):
 
 
     def update(self):
+        '''Update the API if its been more than 20 minutes since the last query.
+
+        Returns the most recent data, regardless of whether the update succeeds.
+
+        Returns:
+            The latest data (see the latest() method)
+        '''
+
         cur_time = pd.Timestamp(time.ctime())
         if (cur_time - self.last_query_time).seconds > EveData.update_interval:
             try:
@@ -78,9 +122,6 @@ data = EveData()
 @app.route('/')
 def home():
     timestamp, kills, jumps, sov = data.update()
-    print timestamp
-    print kills.head()
-    print data.systems_df.head()
     return render_template('main.html', timestamp=timestamp,
                                         systems=data.systems_df,
                                         kills=kills,
