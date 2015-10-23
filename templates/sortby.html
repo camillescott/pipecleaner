@@ -4,7 +4,11 @@
 
 {% for _, row in results_df.iterrows() %}
     <tr title="{{row.Hotness}}" style="background-color: rgba({{row.Color[0]}}, {{row.Color[1]}},{{row.Color[2]}}, 0.5)">
-    <td>{{ row.Dest_Region }}</td>
+        <td>
+        <a href="http://evemaps.dotlan.net/map/{{row.Dest_Region.split()|join('_')}}/{{results_df[results_df.Dest_Region==row.Dest_Region].Dest|join(',')}}#kills">
+            {{row.Dest_Region}}
+        </a>
+        </td>
     <td>
         <a href="http://zkillboard.com/system/{{row.Dest_ID}}/">{{ row.Dest }}</a>
     </td>

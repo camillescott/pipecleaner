@@ -6,7 +6,11 @@
     {% for _, row in group.sort_values('Dest').iterrows() %}
         <tr>
         {% if loop.first %} 
-            <th class="region" rowspan="{{group.index.size}}"> {{ region }} </th>
+            <th class="region" rowspan="{{group.index.size}}">
+            <a href="http://evemaps.dotlan.net/map/{{region.split()|join('_')}}/{{results_df[results_df.Dest_Region==region].Dest|join(',')}}#kills">
+            {{ region }}
+            </a>
+            </th>
         {% endif %}
         <td>
             <a href="http://zkillboard.com/system/{{row.Dest_ID}}/">{{ row.Dest }}</a>
