@@ -143,5 +143,4 @@ def home():
                                         jumps=jumps.fillna(0))
 
 if __name__ == '__main__':
-    app.debug = True
     app.run()
