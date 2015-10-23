@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% block content %}
+
+
+{% for _, row in results_df.iterrows() %}
+    <tr>
+    <td>{{ row.Dest_Region }}</td>
+    <td>
+        <a href="http://zkillboard.com/system/{{row.Dest_ID}}/">{{ row.Dest }}</a>
+    </td>
+    <td>{{ row.Dest_PodKills|int }}</td>
+    <td>{{ row.Dest_PodKills|int }}</td>
+    <td>{{ row.Dest_Jumps|int }}</td>
+
+    <td>
+        <a href="http://zkillboard.com/system/{{row.Entry_ID}}/">{{ row.Entry }}</a> ({{row.Entry_Sec}})
+    </td>
+    <td>{{ row.Entry_ShipKills|int }}</td>
+    <td>{{ row.Entry_PodKills|int }}</td>
+    <td>{{ row.Entry_Jumps }} </td>
+
+    </tr>
+{% endfor %}
+{% endblock %}
