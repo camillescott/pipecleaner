@@ -115,9 +115,6 @@ class EveData(object):
         merged.sort_values('Dest_Region', inplace=True)
         merged.fillna(0, inplace=True)
         
-        print (merged.Dest_PodKills + merged.Dest_ShipKills)
-        print (merged.Dest_PodKills + merged.Dest_ShipKills).max()
-
         merged['Hotness'] = (merged.Dest_PodKills + merged.Dest_ShipKills) / \
                             (merged.Dest_PodKills + merged.Dest_ShipKills).max()
 
@@ -186,4 +183,4 @@ def sortby(key):
                            results_df=results_df)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
