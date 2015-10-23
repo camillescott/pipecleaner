@@ -163,13 +163,15 @@ def region():
 
 @app.route('/sortby/<key>')
 def sortby(key):
-    if key not in EveData.keys:
+    if key not in EveData.keys or key == 'Region':
         return redirect(url_for('region'))
 
     timestamp, results_df = data.update()
-    
+    ascending = False
+    if results_df.dtypes[key] is pd.np.dtype('O'):
+        ascending = True
 
-    results_df.sort_values(key, inplace=True)
+    results_df.sort_values(key, inplace=True, ascending=ascending)
     return render_template('sortby.html',
                            timestamp=timestamp,
                            results_df=results_df)
