@@ -3,4 +3,5 @@ Jinja2==2.7.3
 Werkzeug==0.10.1
 gunicorn==0.17.2
 pandas==0.17.0
+matplotlib==1.4.3
 EVELink==0.7.1
