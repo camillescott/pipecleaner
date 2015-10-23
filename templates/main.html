@@ -8,6 +8,7 @@
     
     <h1>pipecleaner</h1>
     <h3> last update: {{ timestamp.tz_localize('US/Pacific').tz_convert('UTC').ctime() }}</h3>
+    <h3> data age: &#60; 1 hour </h3>
     {% for message in get_flashed_messages() %}
         <div class=flash>{{ message }}</div>
     {% endfor %}
