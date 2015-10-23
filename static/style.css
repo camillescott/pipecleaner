@@ -1,0 +1,97 @@
+html,body {
+    margin:50px auto 0 auto;
+    width: 70%;
+    padding:0;
+}
+body {
+    background: #fff;
+    padding-bottom:20px;
+}
+a { 
+    color: #0066B3; 
+    background: inherit; 
+    text-decoration: none;
+}
+h1 { 
+    color: #036DA7;
+    text-align: center;
+}
+
+h2 { 
+    padding: 0; 
+    margin: 0; 
+    text-align: center;
+}
+
+h3 { 
+    text-align: center;
+}
+
+h4 {
+    text-align: center;
+}
+
+div.section {
+    background: #eee;
+    width: 100%;
+    padding: 10px;
+}
+
+
+div#content {
+	margin: 50px auto 0 auto;
+	background: #fff;
+}
+td {
+    text-align: left;
+    height: 50px;
+    border: 0;
+    padding: 3px;
+}
+
+td.header_region {
+    border-bottom: 2px solid black;
+    text-align: center;
+    font-weight: bold;
+}
+
+td.header {
+    border-bottom: 2px solid black;
+    text-align: left;
+}
+
+tr.header {
+    background: #A0A0A0;
+}
+
+th.region {
+    height: 50px;
+    background: #eee;
+    text-align: center;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+/*    width: 30%;*/
+}
+
+table {
+    width: 100%;
+    margin: auto;
+    table-layout: fixed;
+    border-spacing: 0px;
+    border: 2px solid black;
+}
+
+tr {
+    background: #F8F8F8;
+    border: 0;
+}
+
+tr.region_div {
+    border: 1px solid black;
+}
+
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+                  margin-bottom: 1em; background: #fafafa; }
+.flash          { background: #CEE5F5; padding: 0.5em;
+                  border: 1px solid #AACBE2; }
+.error          { background: #F0D6D6; padding: 0.5em; }
