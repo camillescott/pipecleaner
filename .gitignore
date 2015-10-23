@@ -1,0 +1,7 @@
+*.swp
+*.zip
+*.bak
+*.db
+*.sql
+*.pyc
+.ipynb_checkpoints/
