@@ -29,7 +29,7 @@ class EveData(object):
             'Entry_ShipKills', 'Entry_PodKills', 'Entry_Jumps', 
             'Dest_ShipKills', 'Dest_PodKills', 'Dest_Jumps']
 
-    def __init__(self, data_fn='data/systems.json'):
+    def __init__(self, data_fn='static/systems.json'):
         '''Initialize a new EveData object.
 
         Queries the API for system data on creation.
