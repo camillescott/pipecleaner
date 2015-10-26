@@ -3,12 +3,14 @@
 <head>
     <title>pipecleaner</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
     
-    <h1>pipecleaner</h1>
-    <h3> last update: {{ timestamp.ctime() }}</h3>
-    <h3> data age: &#60; 1 hour </h3>
+    <h1><a href="pipecleaner.camillescott.org">pipecleaner</a></h1>
+    <h3>at-a-glance reference for EVE Online nullsec entry systems</h3>
+    <h4> last update: {{ timestamp.ctime() }}</h4>
+    <h4> data age: &#60; 1 hour </h4>
     {% for message in get_flashed_messages() %}
         <div class=flash>{{ message }}</div>
     {% endfor %}

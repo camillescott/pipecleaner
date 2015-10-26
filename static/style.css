@@ -30,6 +30,7 @@ h3 {
 
 h4 {
     text-align: center;
+    font-style: italic;
 }
 
 div.section {
@@ -48,6 +49,10 @@ td {
     height: 50px;
     border: 0;
     padding: 3px;
+}
+
+td.links {
+    text-align: center;
 }
 
 td.header_region {
@@ -80,6 +85,13 @@ table {
     table-layout: fixed;
     border-spacing: 0px;
     border: 2px solid black;
+}
+
+.links {
+    text-align: center;
+    border: 0;
+    border-spacing: 0px;
+    background: #FFFFFF;
 }
 
 tr {

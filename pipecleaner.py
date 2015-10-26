@@ -157,8 +157,10 @@ class EveData(object):
 
 data = EveData()
 
-
 @app.route('/')
+def home():
+    return redirect(url_for('sortby', key='Dest_ShipKills'))
+
 @app.route('/groupby/Region')
 def region():
     timestamp, results_df = data.update()
