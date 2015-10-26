@@ -81,7 +81,7 @@ class EveData(object):
             print 'Error querying API:', e
             raise
         else:
-            self.last_query_time = pd.Timestamp(time.ctime())
+            self.last_query_time = pd.Timestamp('now', tz='UTC')
 
             kills_df = pd.DataFrame(kills_res).T.ix[self.system_ids]
             jumps_df = pd.DataFrame({'jumps': pd.Series(jumps_res)}).ix[self.system_ids]
@@ -132,7 +132,7 @@ class EveData(object):
             The latest data (see the latest() method)
         '''
 
-        cur_time = pd.Timestamp(time.ctime())
+        cur_time = pd.Timestamp('now', tz='UTC')
         if (cur_time - self.last_query_time).seconds > EveData.update_interval:
             try:
                 kills_df, jumps_df, sov_df = self.query()
@@ -183,4 +183,4 @@ def sortby(key):
                            results_df=results_df)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
